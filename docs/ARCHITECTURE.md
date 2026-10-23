@@ -11,9 +11,9 @@ The library runs inside its caller's JVM. There are no deployed services, storag
 containers, threads, queues, or framework lifecycle hooks.
 
 Version 0.3.0 uses a Java 17 API and bytecode baseline, with supported LTS
-runtimes 17, 21, and 25. The [Java support notes](JAVA-SUPPORT.md) describe the
-compatibility contract and the features intentionally left out of this
-synchronous core.
+runtimes 17, 21, and 25 plus non-LTS Java 27. The
+[Java support notes](JAVA-SUPPORT.md) describe the compatibility contract and the
+features intentionally left out of this synchronous core.
 
 ```text
 Application / CI check

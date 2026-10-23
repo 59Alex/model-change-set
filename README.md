@@ -9,9 +9,10 @@ Compare schema catalogs, metadata definitions, configuration inventories, or API
 models by stable identity. Choose the fields that matter and their equivalence
 rules; get ordered additions, removals, and modifications with before/after values.
 
-Java 17+. Supported LTS runtimes: **17, 21, and 25**. No runtime dependencies,
-reflection, annotations, or framework setup. Version 0.3.0 uses the Java 17 API
-and bytecode baseline; see [Java support and migration](docs/JAVA-SUPPORT.md).
+Java 17+. Supported LTS runtimes: **17, 21, and 25**; **Java 27** is also supported
+as a non-LTS runtime. No runtime dependencies, reflection, annotations, or framework
+setup. Version 0.3.0 uses the Java 17 API and bytecode baseline; see
+[Java support and migration](docs/JAVA-SUPPORT.md).
 
 ## Compare two snapshots
 
@@ -158,10 +159,11 @@ dependencies {
 ```
 
 The command above installs locally; it does not publish to Maven Central. CI tests
-the supported LTS runtimes Java 17, 21, and 25, builds the source/Javadoc artifacts,
-and runs the schema example. A complete JDK is required to build. Use
-`-PtestJavaVersion=17`, `21`, or `25` to select the compiler and runtime; compilation
-always uses `--release 17`. Preview flags are not required.
+the supported LTS runtimes Java 17, 21, and 25 plus the non-LTS Java 27 runtime,
+builds the source/Javadoc artifacts, and runs the schema example. A complete JDK
+is required to build. Use `-PtestJavaVersion=17`, `21`, `25`, or `27` to select the
+compiler and runtime; compilation always uses `--release 17`. Preview flags are
+not required.
 
 See [architecture and failure behavior](docs/ARCHITECTURE.md) for the design and
 trade-offs. Contributions should include a regression test for any changed contract.

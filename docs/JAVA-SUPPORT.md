@@ -1,8 +1,9 @@
 # Java support and migration
 
-Version **0.3.0** has a **Java 17 minimum**. The supported LTS runtime matrix is
-**Java 17, Java 21, and Java 25**. One library artifact serves all three versions;
-there is no version-specific implementation or multi-release jar.
+Version **0.3.0** has a **Java 17 minimum**. The supported LTS runtimes are
+**Java 17, Java 21, and Java 25**. **Java 27** is additionally supported as a
+**non-LTS** runtime. One library artifact serves all four versions; there is no
+version-specific implementation or multi-release jar.
 
 ## Compatibility contract
 
@@ -12,13 +13,14 @@ there is no version-specific implementation or multi-release jar.
 - Published class files target Java 17 (major version **61**, minor **0**).
 - Gradle module metadata declares a minimum JVM version of **17**.
 - Tests and the schema example run on the JDK selected with
-  `-PtestJavaVersion=17`, `21`, or `25`; setting only a bytecode target is not a
+  `-PtestJavaVersion=17`, `21`, `25`, or `27`; setting only a bytecode target is not a
   substitute for executing the supported runtime matrix.
 - Preview features, incubator modules, reflection-based version fallbacks, and
   `--enable-preview` are not required.
 
-Java 27 is not required and is not part of this supported LTS matrix. This document
-replaces the [historical Java 27 baseline](JAVA-27.md) from version 0.2.0.
+Java 27 support does not raise the minimum runtime or change the artifact's Java
+17 target. This document replaces the [historical Java 27-only baseline](JAVA-27.md)
+from version 0.2.0.
 
 ## Build and verify
 
@@ -29,12 +31,13 @@ Gradle's toolchain discovery. Select a JDK with the project property:
 ./gradlew clean build runExample -PtestJavaVersion=17
 ./gradlew clean build runExample -PtestJavaVersion=21
 ./gradlew clean build runExample -PtestJavaVersion=25
+./gradlew clean build runExample -PtestJavaVersion=27
 ```
 
-All three runs compile against the same Java 17 API and use the selected runtime
-for tests and the example. CI follows the same LTS matrix. The release checks also
-inspect the generated class files and publication metadata to catch a target
-version mismatch.
+All four runs compile against the same Java 17 API and use the selected runtime
+for tests and the example. The CI configuration follows the same runtime matrix.
+The release checks also inspect the generated class files and publication metadata
+to catch a target version mismatch.
 
 ## Migrate from 0.1.0 or 0.2.0
 
