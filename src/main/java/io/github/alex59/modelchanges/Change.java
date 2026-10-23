@@ -16,7 +16,14 @@ import java.util.Objects;
  * @param <K> key type
  */
 public record Change<T, K>(K key, ChangeType type, T before, T after, List<FieldChange> fields) {
-    /** Validates change shape and copies the field list. */
+    /**
+     * Validates change shape and copies the field list.
+     * @param key stable non-null identity
+     * @param type direction of this change
+     * @param before old model; null only for ADDED
+     * @param after new model; null only for REMOVED
+     * @param fields changed fields; non-empty only for MODIFIED
+     */
     public Change {
         Objects.requireNonNull(key, "key");
         Objects.requireNonNull(type, "type");

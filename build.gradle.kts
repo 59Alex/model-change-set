@@ -3,22 +3,25 @@ plugins {
     `maven-publish`
 }
 
+val testJavaVersion = providers.gradleProperty("testJavaVersion").map(String::toInt)
+    .getOrElse(JavaVersion.current().majorVersion.toInt())
+
 group = "io.github.59alex"
-version = "0.2.0"
+version = "0.3.0"
 
 repositories { mavenCentral() }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(27))
-    sourceCompatibility = JavaVersion.VERSION_27
-    targetCompatibility = JavaVersion.VERSION_27
+    toolchain.languageVersion.set(JavaLanguageVersion.of(testJavaVersion))
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
     withSourcesJar()
     withJavadocJar()
 }
 
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
-    options.release.set(27)
+    options.release.set(17)
 }
 
 dependencies {
@@ -73,9 +76,9 @@ publishing {
     }
 }
 
-// Custom JavaExec tasks must use the same JDK as compilation, even if Gradle runs on an older JVM.
+// Examples use the selected LTS runtime, while all sources target Java 17.
 tasks.withType<JavaExec>().configureEach {
     javaLauncher.set(javaToolchains.launcherFor {
-        languageVersion.set(JavaLanguageVersion.of(27))
+        languageVersion.set(JavaLanguageVersion.of(testJavaVersion))
     })
 }

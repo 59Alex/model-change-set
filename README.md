@@ -9,9 +9,9 @@ Compare schema catalogs, metadata definitions, configuration inventories, or API
 models by stable identity. Choose the fields that matter and their equivalence
 rules; get ordered additions, removals, and modifications with before/after values.
 
-Java 27+. No runtime dependencies, reflection, annotations, or framework setup.
-Version 0.2.0 moves the minimum JDK from 17 to 27 and uses stable Java APIs only;
-see the [migration notes](docs/JAVA-27.md).
+Java 17+. Supported LTS runtimes: **17, 21, and 25**. No runtime dependencies,
+reflection, annotations, or framework setup. Version 0.3.0 uses the Java 17 API
+and bytecode baseline; see [Java support and migration](docs/JAVA-SUPPORT.md).
 
 ## Compare two snapshots
 
@@ -66,19 +66,9 @@ Run the complete [example](src/examples/java/io/github/alex59/modelchanges/examp
 filtered lists. `changes.isEmpty()` is useful for a CI check or a conditional refresh.
 An empty field definition list compares membership only.
 
-The returned lists also support sequenced access and reverse-order report views:
-
-```java
-if (!changes.isEmpty()) {
-    var firstKey = changes.changes().getFirst().key();
-    var lastKey = changes.changes().getLast().key();
-}
-var descendingReport = changes.changes().reversed();
-```
-
-`reversed()` changes traversal order, not the before/after direction. The view
-remains unmodifiable. `getFirst()` and `getLast()` throw `NoSuchElementException`
-on an empty list, so check `isEmpty()` when the snapshots may match.
+The returned lists retain key order and support the standard Java 17 `List` API.
+Their iterators are unmodifiable as well. Traversing a report backwards changes
+only traversal order, not the before/after direction of the changes.
 
 ## Decide what “equal” means
 
@@ -163,14 +153,15 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation("io.github.59alex:model-change-set:0.2.0")
+    implementation("io.github.59alex:model-change-set:0.3.0")
 }
 ```
 
 The command above installs locally; it does not publish to Maven Central. CI tests
-Java 27, builds the source/Javadoc artifacts, and runs the schema example. Set
-`JAVA_HOME` to a complete JDK 27 installation before running Gradle. Preview flags
-are not required.
+the supported LTS runtimes Java 17, 21, and 25, builds the source/Javadoc artifacts,
+and runs the schema example. A complete JDK is required to build. Use
+`-PtestJavaVersion=17`, `21`, or `25` to select the compiler and runtime; compilation
+always uses `--release 17`. Preview flags are not required.
 
 See [architecture and failure behavior](docs/ARCHITECTURE.md) for the design and
 trade-offs. Contributions should include a regression test for any changed contract.

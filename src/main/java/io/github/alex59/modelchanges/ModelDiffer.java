@@ -31,7 +31,7 @@ public final class ModelDiffer<T, K> {
         this.key = Objects.requireNonNull(key, "key");
         this.order = Objects.requireNonNull(order, "order");
         this.fields = List.copyOf(fields);
-        var names = HashSet.<String>newHashSet(this.fields.size());
+        var names = new HashSet<String>();
         for (Field<T, ?> field : this.fields) {
             if (!names.add(field.name())) {
                 throw new IllegalArgumentException("Duplicate field name: " + field.name());

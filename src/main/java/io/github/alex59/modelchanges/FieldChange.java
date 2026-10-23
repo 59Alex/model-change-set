@@ -10,7 +10,12 @@ import java.util.Objects;
  * @param after value after the change
  */
 public record FieldChange(String name, Object before, Object after) {
-    /** Validates the field name. */
+    /**
+     * Validates the field name.
+     * @param name configured field name
+     * @param before value before the change; may be null
+     * @param after value after the change; may be null
+     */
     public FieldChange {
         Objects.requireNonNull(name, "name");
         if (name.isBlank()) throw new IllegalArgumentException("Field name must not be blank");
