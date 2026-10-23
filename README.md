@@ -22,7 +22,20 @@ as a non-LTS runtime. No runtime dependencies, reflection, annotations, or frame
 setup. Version 0.3.0 uses the Java 17 API and bytecode baseline; see
 [Java support and migration](docs/JAVA-SUPPORT.md).
 
+## Try it
+
+With a full JDK 17, 21, 25, or 27 installed:
+
+```sh
+git clone https://github.com/59Alex/model-change-set.git
+cd model-change-set
+./gradlew runExample
+```
+
 ## Compare two snapshots
+
+The snippet below belongs in a method body after the imports. The complete runnable
+example is included in the repository and runs with the command above.
 
 ```java
 import io.github.alex59.modelchanges.Field;
@@ -192,6 +205,60 @@ trade-offs. Contributions should include a regression test for any changed contr
 
 Сравнивайте снимки моделей по стабильному ключу и явно заданным правилам полей. Получайте упорядоченные добавления, удаления и изменения либо обрабатывайте отсортированные источники по одному изменению.
 
+## Попробовать
+
+Понадобится полный JDK 17, 21, 25 или 27; внешние сервисы не нужны.
+
+```sh
+git clone https://github.com/59Alex/model-change-set.git
+cd model-change-set
+./gradlew runExample
+```
+
+[Полный пример](src/examples/java/io/github/alex59/modelchanges/examples/SchemaDiff.java)
+сравнивает две версии схемы и печатает:
+
+```text
+ADDED orders.created_at
+REMOVED orders.legacy
+MODIFIED orders.note
+  nullable: true -> false
+```
+
+Ключ определяет одну и ту же модель в обоих снимках; список полей — какие значения
+участвуют в сравнении. Например, следующий фрагмент помещается в тело метода после импортов:
+
+```java
+import io.github.alex59.modelchanges.Field;
+import io.github.alex59.modelchanges.ModelDiffer;
+import java.util.Comparator;
+import java.util.List;
+
+record Column(String key, String type) {}
+var differ = ModelDiffer.<Column, String>of(
+    Column::key, Comparator.naturalOrder(), List.of(Field.of("type", Column::type)));
+var changes = differ.compare(
+    List.of(new Column("orders.id", "int")),
+    List.of(new Column("orders.id", "bigint")));
+System.out.println(changes.modified().get(0).fields().get(0).after()); // bigint
+```
+
+## Что важно для интеграции
+
+- `compare(before, after)` принимает конечные снимки в любом порядке и возвращает
+  добавления, удаления и изменения, отсортированные по ключу.
+- `Field.of` использует `Objects.deepEquals`, включая массивы и `null`.
+  `Field.comparing` задаёт собственное правило равенства, в том числе обработку `null`.
+- `compareSorted` последовательно читает два строго отсортированных итератора и
+  синхронно передаёт изменения обработчику. Поздняя ошибка может оставить уже
+  обработанную часть; закрытие курсоров и откат побочных эффектов выполняет приложение.
+- Дубликаты ключей, `null` вместо модели или ключа и коллизии компаратора отклоняются.
+  Ключи должны быть стабильными, а порядок — согласованным с `equals`.
+- Коллекции результата неизменяемы; ключи, модели и значения полей сохраняются по
+  ссылке. Используйте неизменяемые снимки и безопасные для совместного доступа функции.
+- Библиотека сравнивает явно описанные данные: не определяет переименования, не
+  выполняет миграции и не объявляет их автоматически безопасными.
+
 ## Возможности
 
 | Возможность | Пример и объяснение |
@@ -210,7 +277,22 @@ trade-offs. Contributions should include a regression test for any changed contr
 
 Специальных модулей с API Java 21/25/27 нет: библиотека использует базу Java 17.
 
-Артефакты устанавливаются из исходников через Maven Local; публикация в Maven Central пока не настроена. Точные зависимости, команды и требования примера находятся в руководстве.
+Установите артефакт из исходников в локальный Maven-репозиторий:
+
+```sh
+./gradlew build publishToMavenLocal
+```
+
+Подключите его в Gradle-проекте:
+
+```kotlin
+repositories { mavenLocal(); mavenCentral() }
+dependencies { implementation("io.github.59alex:model-change-set:0.3.0") }
+```
+
+Это локальная установка, а не публикация в Maven Central. Для выбора установленного
+JDK используйте `-PtestJavaVersion=17`, `21`, `25` или `27`; байткод всегда рассчитан
+на Java 17. Подробные сценарии с ожидаемым результатом доступны в таблице выше.
 
 ## Лицензия
 

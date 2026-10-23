@@ -68,7 +68,7 @@ record Column(String key, String type, boolean nullable) {}
 
 Общие импорты и модель. Ключ сохраняет значение между снимками.
 
-Файл для скачивания: examples/model-change-set/Example.java. Нужны только jar библиотеки и JDK; команды компиляции и запуска приведены в разделе 7.
+Файл для скачивания: docs/0.3.0/examples/Example.java. Нужны только jar библиотеки и JDK; команды компиляции и запуска приведены в разделе 7.
 
 ## 2. Сравнение снимков и порядок результата
 
@@ -402,16 +402,15 @@ Invalid change shape for MODIFIED
 
 ## 7. Запуск полного примера и диагностика
 
-Скачайте Example.java и сохраните в корне репозитория после сборки версии 0.3.0. Команды для POSIX shell используют обычный jar, а не архив исходников или Javadoc.
+Запустите [Example.java](examples/Example.java), уже включённый в исходники, из корня репозитория на полном JDK 17 или поддерживаемой более новой версии. Команды для POSIX shell используют двоеточие как разделитель classpath; в Windows используйте точку с запятой. Примеру нужны только JAR библиотеки и JDK.
 
 ```bash
-mkdir -p example-classes
+./gradlew jar
+mkdir -p build/docs-example
 javac --release 17 -cp build/libs/model-change-set-0.3.0.jar \
-  -d example-classes Example.java
-java -cp example-classes:build/libs/model-change-set-0.3.0.jar Example
+  -d build/docs-example docs/0.3.0/examples/Example.java
+java -cp build/docs-example:build/libs/model-change-set-0.3.0.jar Example
 ```
-
-Пример выполняет все Java-сценарии выше. В Windows используйте точку с запятой вместо двоеточия в classpath запуска.
 
 ```text
 All examples completed.

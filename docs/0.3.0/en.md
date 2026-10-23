@@ -68,7 +68,7 @@ record Column(String key, String type, boolean nullable) {}
 
 Shared imports and model declaration. The key remains stable across snapshots.
 
-Downloadable file: examples/model-change-set/Example.java. It uses only the library jar and the JDK; section 7 shows how to compile and run it.
+Downloadable file: docs/0.3.0/examples/Example.java. It uses only the library jar and the JDK; section 7 shows how to compile and run it.
 
 ## 2. Compare snapshots and control ordering
 
@@ -402,16 +402,15 @@ Expected output.
 
 ## 7. Run the complete example and diagnose failures
 
-Download Example.java and save it at the repository root after building version 0.3.0. The following POSIX-shell commands use the ordinary jar, not the sources or Javadoc jar.
+Run [Example.java](examples/Example.java), already included in the checkout, from the repository root with a full JDK 17 or a supported newer JDK. The POSIX commands below use a colon as the classpath separator; on Windows use a semicolon. The example needs only the library JAR and a JDK.
 
 ```bash
-mkdir -p example-classes
+./gradlew jar
+mkdir -p build/docs-example
 javac --release 17 -cp build/libs/model-change-set-0.3.0.jar \
-  -d example-classes Example.java
-java -cp example-classes:build/libs/model-change-set-0.3.0.jar Example
+  -d build/docs-example docs/0.3.0/examples/Example.java
+java -cp build/docs-example:build/libs/model-change-set-0.3.0.jar Example
 ```
-
-The example executes every Java scenario above. On Windows, use a semicolon instead of a colon in the runtime classpath.
 
 ```text
 All examples completed.
