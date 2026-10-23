@@ -4,7 +4,10 @@ import java.util.List;
 
 /**
  * An immutable list of model changes. Results produced by {@link ModelDiffer}
- * are ordered by its key comparator; unchanged models are omitted.
+ * are ordered by its key comparator; unchanged models are omitted. Returned
+ * lists support sequenced operations such as {@link List#getFirst()},
+ * {@link List#getLast()}, and {@link List#reversed()}. Reversing the view does
+ * not invert the direction of the changes or make the list mutable.
  *
  * @param changes model changes
  * @param <T> model type

@@ -8,13 +8,11 @@ import java.util.List;
 
 /** A self-contained schema snapshot comparison. Run with ./gradlew runExample. */
 public final class SchemaDiff {
-    private SchemaDiff() { }
-
     /** A logical column, identified across snapshots by its qualified name. */
     public record Column(String qualifiedName, String type, boolean nullable) { }
 
-    /** Runs the example. @param args ignored */
-    public static void main(String[] args) {
+    /** Runs the example using the standard instance-main entry point. */
+    void main() {
         var differ = ModelDiffer.<Column, String>of(Column::qualifiedName, Comparator.naturalOrder(), List.of(
                 Field.of("type", Column::type),
                 Field.of("nullable", Column::nullable)));

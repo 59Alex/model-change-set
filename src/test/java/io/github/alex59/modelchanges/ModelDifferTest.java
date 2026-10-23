@@ -9,7 +9,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
+import java.util.SequencedCollection;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,11 +33,11 @@ class ModelDifferTest {
         assertEquals(List.of("added", "modified", "removed"), result.changes().stream().map(Change::key).toList());
         assertEquals(List.of(ChangeType.ADDED, ChangeType.MODIFIED, ChangeType.REMOVED),
                 result.changes().stream().map(Change::type).toList());
-        assertNull(result.added().get(0).before());
-        assertEquals(column("added", "bool"), result.added().get(0).after());
-        assertEquals(column("removed", "text"), result.removed().get(0).before());
-        assertNull(result.removed().get(0).after());
-        assertEquals(List.of(new FieldChange("type", "int", "bigint")), result.modified().get(0).fields());
+        assertNull(result.added().getFirst().before());
+        assertEquals(column("added", "bool"), result.added().getFirst().after());
+        assertEquals(column("removed", "text"), result.removed().getFirst().before());
+        assertNull(result.removed().getFirst().after());
+        assertEquals(List.of(new FieldChange("type", "int", "bigint")), result.modified().getFirst().fields());
     }
 
     @Test void arbitraryInputOrderingNeverChangesTheReport() {
@@ -48,6 +50,29 @@ class ModelDifferTest {
             Collections.shuffle(after, random);
             assertEquals(expected, differ.compare(before, after));
         }
+    }
+
+    @Test void sequencedViewsRetainKeyOrderAndCannotMutateTheReport() {
+        var result = differ.compare(List.of(column("b", "int")),
+                List.of(column("a", "text"), column("c", "text")));
+        SequencedCollection<Change<Column, String>> ordered = result.changes();
+        assertEquals("a", ordered.getFirst().key());
+        assertEquals("c", ordered.getLast().key());
+
+        var reversed = ordered.reversed();
+        assertEquals(List.of("c", "b", "a"), reversed.stream().map(Change::key).toList());
+        assertEquals(ChangeType.ADDED, reversed.getFirst().type());
+        assertEquals(ChangeType.REMOVED, result.removed().getFirst().type());
+        assertThrows(UnsupportedOperationException.class, reversed::removeFirst);
+        assertThrows(UnsupportedOperationException.class, () -> reversed.addLast(ordered.getFirst()));
+        assertEquals(List.of("a", "b", "c"), result.changes().stream().map(Change::key).toList());
+    }
+
+    @Test void sequencedEndpointsOnEmptyReportsDoNotInventAChange() {
+        var empty = differ.compare(List.of(), List.of()).changes();
+        assertThrows(NoSuchElementException.class, empty::getFirst);
+        assertThrows(NoSuchElementException.class, empty::getLast);
+        assertTrue(empty.reversed().isEmpty());
     }
 
     @Test void emptyAndUnchangedSnapshotsProduceEmptyResults() {
@@ -70,10 +95,10 @@ class ModelDifferTest {
 
     @Test void nullFieldsRemainDifferentFromEmptyStringsAndMissingModels() {
         var result = differ.compare(List.of(column("id", null)), List.of(column("id", "")));
-        assertEquals(List.of(new FieldChange("type", null, "")), result.modified().get(0).fields());
+        assertEquals(List.of(new FieldChange("type", null, "")), result.modified().getFirst().fields());
         var addedNull = differ.compare(List.of(), List.of(column("id", null)));
-        assertEquals(ChangeType.ADDED, addedNull.changes().get(0).type());
-        assertTrue(addedNull.changes().get(0).fields().isEmpty());
+        assertEquals(ChangeType.ADDED, addedNull.changes().getFirst().type());
+        assertTrue(addedNull.changes().getFirst().fields().isEmpty());
     }
 
     @Test void supportsNullAwareDomainEquivalenceAndRetainsOriginalChangedValues() {
@@ -85,7 +110,7 @@ class ModelDifferTest {
                 List.of(new Price("x", new BigDecimal("1.00")))).isEmpty());
         var changed = priceDiffer.compare(List.of(new Price("x", null)),
                 List.of(new Price("x", new BigDecimal("1.00"))));
-        assertEquals(new BigDecimal("1.00"), changed.modified().get(0).fields().get(0).after());
+        assertEquals(new BigDecimal("1.00"), changed.modified().getFirst().fields().getFirst().after());
     }
 
     @Test void defaultComparisonSupportsPrimitiveArrayValues() {
@@ -126,7 +151,7 @@ class ModelDifferTest {
         assertThrows(IllegalArgumentException.class, () -> ModelDiffer.of(Column::key,
                 Comparator.naturalOrder(), List.of(Field.of("x", Column::type), Field.of("x", Column::comment))));
         var change = differ.compare(List.of(new Column("id", "int", "old", 0)),
-                List.of(new Column("id", "text", "new", 0))).modified().get(0);
+                List.of(new Column("id", "text", "new", 0))).modified().getFirst();
         assertEquals(List.of("type", "comment"), change.fields().stream().map(FieldChange::name).toList());
     }
 
@@ -153,7 +178,7 @@ class ModelDifferTest {
         var result = local.compare(List.of(column("id", "int")), List.of(column("id", "text")));
         assertEquals(1, result.modified().size());
         assertThrows(UnsupportedOperationException.class, () -> result.changes().clear());
-        assertThrows(UnsupportedOperationException.class, () -> result.modified().get(0).fields().clear());
+        assertThrows(UnsupportedOperationException.class, () -> result.modified().getFirst().fields().clear());
     }
 
     @Test void changeRecordRejectsInvalidStates() {

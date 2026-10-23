@@ -10,6 +10,10 @@ reads, domain policies, report serialization, and any subsequent action.
 The library runs inside its caller's JVM. There are no deployed services, storage
 containers, threads, queues, or framework lifecycle hooks.
 
+Version 0.2.0 requires Java 27 and preserves the same comparison contracts. The
+[Java migration notes](JAVA-27.md) describe the stable APIs adopted and the
+features intentionally left out of this synchronous core.
+
 ```text
 Application / CI check
   | before + after models, identity and field policies
