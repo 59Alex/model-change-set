@@ -1,5 +1,7 @@
 # Java support and migration
 
+[← Back to documentation and versions / Назад к документации и версиям](index.md)
+
 Version **0.3.0** has a **Java 17 minimum**. The supported LTS runtimes are
 **Java 17, Java 21, and Java 25**. **Java 27** is additionally supported as a
 **non-LTS** runtime. One library artifact serves all four versions; there is no
@@ -74,3 +76,5 @@ Result lists and their iterators remain unmodifiable. Reverse iteration changes
 the report's presentation order, never the direction of a change. Tests cover
 this contract as well as empty reports, duplicate identities, field policies,
 deterministic ordering, and bounded-lookahead merge behavior.
+
+[← Back to documentation and versions / Назад к документации и версиям](index.md)

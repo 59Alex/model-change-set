@@ -1,7 +1,9 @@
 # model-change-set
 
-**Language:** [English](README.md) · [Русский](README.ru.md)<br>
-**Library version:** [0.3.0](docs/0.3.0/en.md) · [All versions](docs/README.md)<br>
+<details name="readme-language">
+<summary><picture><source media="(prefers-color-scheme: dark)" srcset="assets/lang-en-dark.svg"><img src="assets/lang-en-light.svg" width="42" height="26" alt="EN"></picture></summary>
+
+**Library version:** [0.3.0](docs/0.3.0/en.md) · [All versions](docs/index.md)<br>
 **Java:** [17](docs/0.3.0/java.en.md#java-17) · [21](docs/0.3.0/java.en.md#java-21) · [25](docs/0.3.0/java.en.md#java-25) · [27](docs/0.3.0/java.en.md#java-27)
 
 [**Usage guide: capabilities, examples and expected results →**](docs/0.3.0/en.md)
@@ -177,3 +179,41 @@ trade-offs. Contributions should include a regression test for any changed contr
 ## License
 
 [MIT](LICENSE). The Gradle wrapper retains its upstream Apache 2.0 notices.
+
+</details>
+
+<details name="readme-language" open>
+<summary><picture><source media="(prefers-color-scheme: dark)" srcset="assets/lang-ru-dark.svg"><img src="assets/lang-ru-light.svg" width="42" height="26" alt="RU"></picture></summary>
+
+**Версия библиотеки:** [0.3.0](docs/0.3.0/ru.md) · [Все версии](docs/index.md)<br>
+**Java:** [17](docs/0.3.0/java.ru.md#java-17) · [21](docs/0.3.0/java.ru.md#java-21) · [25](docs/0.3.0/java.ru.md#java-25) · [27](docs/0.3.0/java.ru.md#java-27)
+
+[**Руководство: возможности, примеры и результаты →**](docs/0.3.0/ru.md)
+
+Сравнивайте снимки моделей по стабильному ключу и явно заданным правилам полей. Получайте упорядоченные добавления, удаления и изменения либо обрабатывайте отсортированные источники по одному изменению.
+
+## Возможности
+
+| Возможность | Пример и объяснение |
+| --- | --- |
+| 1. Установка и подготовка примера | [Открыть](docs/0.3.0/ru.md#1-установка-и-подготовка-примера) |
+| 2. Сравнение снимков и порядок результата | [Открыть](docs/0.3.0/ru.md#2-сравнение-снимков-и-порядок-результата) |
+| 3. Правила равенства и null | [Открыть](docs/0.3.0/ru.md#3-правила-равенства-и-null) |
+| 4. Фильтры результата и сравнение состава | [Открыть](docs/0.3.0/ru.md#4-фильтры-результата-и-сравнение-состава) |
+| 5. Последовательное сравнение отсортированных источников | [Открыть](docs/0.3.0/ru.md#5-последовательное-сравнение-отсортированных-источников) |
+| 6. Проверка ключей и границы поведения | [Открыть](docs/0.3.0/ru.md#6-проверка-ключей-и-границы-поведения) |
+| 7. Запуск полного примера и диагностика | [Открыть](docs/0.3.0/ru.md#7-запуск-полного-примера-и-диагностика) |
+
+## Совместимость и установка
+
+Основной артефакт требует Java 17. Проверены JVM 17, 21, 25 и 27. Более новая JVM не повышает минимальную версию библиотеки.
+
+Специальных модулей с API Java 21/25/27 нет: библиотека использует базу Java 17.
+
+Артефакты устанавливаются из исходников через Maven Local; публикация в Maven Central пока не настроена. Точные зависимости, команды и требования примера находятся в руководстве.
+
+## Лицензия
+
+[MIT](LICENSE). Лицензии сторонних зависимостей сохраняются.
+
+</details>

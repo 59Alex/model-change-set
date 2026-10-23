@@ -1,5 +1,7 @@
 # Historical Java 27 baseline — superseded
 
+[← Back to documentation and versions / Назад к документации и версиям](index.md)
+
 The Java 27-only baseline introduced in version **0.2.0** has been superseded by
 version **0.3.0**. The current minimum is **Java 17**, with supported LTS runtimes
 **17, 21, and 25**, plus **Java 27** as a supported **non-LTS** runtime.
@@ -14,3 +16,5 @@ runtime matrix, and compatibility contract. The library no longer requires
 The comparison algorithm, model records, defensive copying, and input validation
 remain in place. This historical note is retained so existing links do not
 mistakenly imply that the current release requires Java 27.
+
+[← Back to documentation and versions / Назад к документации и версиям](index.md)

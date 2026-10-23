@@ -1,8 +1,10 @@
 # model-change-set 0.3.0 — usage guide
 
+[← Back to documentation and versions / Назад к документации и версиям](../index.md)
+
 [English](en.md) · [Русский](ru.md)
 
-[Versions](../README.md) · [README](../../README.md) · [Java features](java.en.md)
+[Versions](../index.md) · [README](../../README.md) · [Java features](java.en.md)
 
 Compare keyed model snapshots with explicit field policies. Receive deterministic additions, removals, and modifications, or merge sorted inputs one change at a time.
 
@@ -438,3 +440,5 @@ Run the library's tests and bundled schema example on each installed JDK. Compil
 - [Example.java](examples/Example.java)
 
 [MIT](../../LICENSE)
+
+[← Back to documentation and versions / Назад к документации и версиям](../index.md)

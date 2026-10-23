@@ -1,5 +1,7 @@
 # Architecture
 
+[← Back to documentation and versions / Назад к документации и версиям](index.md)
+
 ## Purpose and boundary
 
 An application has two finite snapshots of a logical model and needs to understand
@@ -101,3 +103,5 @@ Identity defines alignment; projections define meaning; comparator order defines
 presentation. The library guarantees neither migration safety nor durable audit
 storage. Its useful boundary is a reproducible report with explicit input errors
 and a bounded-memory path when callers can provide sorted snapshots.
+
+[← Back to documentation and versions / Назад к документации и версиям](index.md)

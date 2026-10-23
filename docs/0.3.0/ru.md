@@ -1,8 +1,10 @@
 # model-change-set 0.3.0 — руководство
 
+[← Back to documentation and versions / Назад к документации и версиям](../index.md)
+
 [English](en.md) · [Русский](ru.md)
 
-[Версии](../README.md) · [README](../../README.ru.md) · [Возможности Java](java.ru.md)
+[Версии](../index.md) · [README](../../README.md) · [Возможности Java](java.ru.md)
 
 Сравнивайте снимки моделей по стабильному ключу и явно заданным правилам полей. Получайте упорядоченные добавления, удаления и изменения либо обрабатывайте отсортированные источники по одному изменению.
 
@@ -438,3 +440,5 @@ All examples completed.
 - [Example.java](examples/Example.java)
 
 [MIT](../../LICENSE)
+
+[← Back to documentation and versions / Назад к документации и версиям](../index.md)
